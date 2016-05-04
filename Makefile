@@ -25,18 +25,18 @@ help:
 #all: object elf hex
 
 clean:
-	rm -f $(src).elf $(src).eeprom.hex $(src).fuses.hex $(src).lfuse.hex $(src).hfuse.hex $(src).efuse.hex $(src).flash.hex $(src).o $(src).lst
+	rm -f $(dstDir)/*
 
 object:
-	avr-gcc $(cflags) -mmcu=$(avrType) -Wa,-ahlmns=$(src).lst -c -o $(src).o $(src).c
+	avr-gcc $(cflags) -mmcu=$(avrType) -Wa,-ahlmns=$(dstDir)/$(src).lst -c -o $(dstDir)/$(src).o $(srcDir)/$(src).c
 
 elf: object
-	avr-gcc $(cflags) -mmcu=$(avrType) -o $(src).elf $(src).o
-	chmod a-x $(src).elf 2>&1
+	avr-gcc $(cflags) -mmcu=$(avrType) -o $(dstDir)/$(src).elf $(dstDir)/$(src).o
+	chmod a-x $(dstDir)/$(src).elf 2>&1
 
 hex:    elf
-	avr-objcopy -j .text -j .data -O ihex $(src).elf $(src).flash.hex
-	avr-objcopy -j .eeprom --set-section-flags=.eeprom="alloc,load" --change-section-lma .eeprom=0 -O ihex $(src).elf $(src).eeprom.hex
+	avr-objcopy -j .text -j .data -O ihex $(dstDir)/$(src).elf $(dstDir)/$(src).flash.hex
+	avr-objcopy -j .eeprom --set-section-flags=.eeprom="alloc,load" --change-section-lma .eeprom=0 -O ihex $(dstDir)/$(src).elf $(dstDir)/$(src).eeprom.hex
 
 #program: flash eeprom fuses
 #
