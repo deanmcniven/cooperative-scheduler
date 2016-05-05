@@ -1,1 +1,4 @@
-target/
+*.o
+*.elf
+*.lst
+*.hex
