@@ -1,7 +1,3 @@
-#baud=19200
-#programmerDev=/dev/ttyUSB003
-#programmerType=arduino
-
 SOURCES=main.c
 OBJECTS=$(SOURCES:.c=.o)
 EXECUTABLE=coop-sched
@@ -26,8 +22,5 @@ hex: $(EXECUTABLE)
 	avr-objcopy -j .text -j .data -O ihex $(EXECUTABLE).elf $(EXECUTABLE).flash.hex
 	avr-objcopy -j .eeprom --set-section-flags=.eeprom="alloc,load" --change-section-lma .eeprom=0 -O ihex $(EXECUTABLE).elf $(EXECUTABLE).eeprom.hex
 
-#program: flash eeprom fuses
-#
-#flash: hex
-#	avrdude -p$(avrType) -c$(programmerType) -P$(programmerDev) -b$(baud) -v -U flash:w:$(src).flash.hex
-#	date
+flash: hex
+	sudo avrdude -p m168 -c usbtiny -v -U flash:w:$(EXECUTABLE).flash.hex
