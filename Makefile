@@ -8,8 +8,7 @@ EXECUTABLE=coop-sched
 
 CC=avr-gcc
 CFLAGS=-Wall -Os -Werror -Wextra
-AVRTYPE=atmega168p
-
+AVRTYPE=atmega168a
 
 all: $(SOURCES) $(EXECUTABLE) hex
 
