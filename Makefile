@@ -9,7 +9,7 @@ AVRTYPE=atmega168a
 all: $(SOURCES) $(EXECUTABLE) hex
 
 clean:
-	rm -f *.o *.elf *.lst *.hex
+	rm -f *.o *.elf *.lst *.hex *.decompiled
 
 .c.o:
 	$(CC) $(CFLAGS) -mmcu=$(AVRTYPE) -Wa,-ahlmns=$(EXECUTABLE).lst -c $< -o $@
@@ -24,3 +24,6 @@ hex: $(EXECUTABLE)
 
 flash: hex
 	sudo avrdude -p m168 -c usbtiny -v -U flash:w:$(EXECUTABLE).flash.hex
+
+decompile: hex
+	avr-objdump -s -m avr:5 -D $(EXECUTABLE).flash.hex > $(EXECUTABLE).decompiled
