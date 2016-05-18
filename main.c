@@ -62,7 +62,7 @@ void setupHardware()
     ASSR = 0x00;    //Timer2: Internal Clock
     TCCR2A = 0x02;  //CTC Mode
     TCCR2B = 0x07;  //Prescale: 1024
-    OCR2A = 0xEB;   //Count: 235 (~15ms)
+    OCR2A = 0x9C;   //Count: 156 (~10ms)
     TIMSK2 = 0x02;  //Enable Compare Interrupt
 
     //Led on PB5 output
@@ -85,5 +85,5 @@ void yield(uint8_t pid, uint32_t numTicks) {
 
 void taskOne(uint8_t pid) {
     PORTB = (PORTB ^ 0x20);
-    yield(pid, 66);
+    yield(pid, 100);
 }
