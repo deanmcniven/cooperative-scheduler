@@ -85,6 +85,6 @@ void yield(uint8_t pid, uint32_t numTicks) {
 }
 
 void taskOne(uint8_t pid) {
-    PORTB = (PORTB && 0x10) ? (0 << PORTB5) : (1 << PORTB5);
+    PORTB = ((PORTB & 0x20) == 0x00) ? (1 << PORTB5) : (0 << PORTB5);
     yield(pid, 66);
 }
