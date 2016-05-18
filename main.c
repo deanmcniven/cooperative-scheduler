@@ -79,8 +79,7 @@ void yield(uint8_t pid, uint32_t numTicks) {
     cli();
     Tasks[pid].state = WAIT;
     Tasks[pid].wait_ticks = ticks + numTicks;
-    if (Tasks[pid].wait_ticks < ticks) Tasks[pid].tick_roll = 1;
-    else Tasks[pid].tick_roll = 0;
+    Tasks[pid].tick_roll = (Tasks[pid].wait_ticks < ticks) ? 1 : 0;
     sei();
 }
 
