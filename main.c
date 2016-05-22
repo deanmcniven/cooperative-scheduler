@@ -9,6 +9,7 @@
 #include "stdio.h"
 
 #include "coop_sched.h"
+#include "display.h"
 
 void setupTimer(void);
 void yield(uint8_t pid, uint32_t numTicks);
@@ -30,6 +31,7 @@ int main()
 {
     cli();
     setupTimer();
+    setupDisplay();
     sei();
 
     int currentTask = 0;
@@ -81,6 +83,6 @@ void yield(uint8_t pid, uint32_t numTicks) {
 }
 
 void taskOne(uint8_t pid) {
-    PORTB = (PORTB ^ 0x20);
+    LED = (LED ^ 0x03);
     yield(pid, 100);
 }
