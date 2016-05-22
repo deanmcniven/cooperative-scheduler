@@ -10,7 +10,7 @@
 
 #include "coop_sched.h"
 
-void setupHardware(void);
+void setupTimer(void);
 void yield(uint8_t pid, uint32_t numTicks);
 void taskOne(uint8_t);
 
@@ -29,7 +29,7 @@ volatile uint32_t ticks = 0;
 int main()
 {
     cli();
-    setupHardware();
+    setupTimer();
     sei();
 
     int currentTask = 0;
@@ -56,7 +56,7 @@ int main()
     }
 }
 
-void setupHardware()
+void setupTimer()
 {
     //Setup Ticks generation
     ASSR = 0x00;    //Timer2: Internal Clock
@@ -64,9 +64,6 @@ void setupHardware()
     TCCR2B = 0x07;  //Prescale: 1024
     OCR2A = 0x9C;   //Count: 156 (~10ms)
     TIMSK2 = 0x02;  //Enable Compare Interrupt
-
-    //Led on PB5 output
-    DDRB = 1 << DDB5;
 }
 
 ISR(TIMER2_COMPA_vect) {
