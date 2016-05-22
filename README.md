@@ -1,3 +1,15 @@
 #Co-Operative Scheduler
 
 Simple PoC Co-Operative scheduler for an Atmel atMega168a
+
+
+#Display Shield
+Custom shield with 2 LEDS and 2 7-Segent Displays driven by HEF4543B BCD-to-7Seg Drivers.
+
+Logic 1 Illuminates
+LED1 = PORTB1
+LED0 = PORTB0
+
+BCD Common address bus = PORTD7-4
+BCD LatchEn MSD = PORTD3
+BCD LatchEn LSD = PORTD2
