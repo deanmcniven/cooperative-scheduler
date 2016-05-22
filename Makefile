@@ -1,4 +1,4 @@
-SOURCES=main.c
+SOURCES=main.c display.c
 OBJECTS=$(SOURCES:.c=.o)
 EXECUTABLE=coop-sched
 
