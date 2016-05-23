@@ -17,6 +17,7 @@
 #define BCD_BLANK   0xF0
 #define BCD_L_MSD   3
 #define BCD_L_LSD   2
+#define BCD_OFFSET  4
 
 #define LED         PORTB
 #define LED1        1
