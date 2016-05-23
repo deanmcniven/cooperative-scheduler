@@ -14,14 +14,23 @@
 void setupTimer(void);
 void yield(uint8_t pid, uint32_t numTicks);
 void taskOne(uint8_t);
+void taskTwo(uint8_t);
+void taskThree(uint8_t);
 
-#define NUM_TASKS 1
+#define NUM_TASKS 3
 volatile task_t Tasks[NUM_TASKS] = {
     {
         taskOne,
         RUNNABLE,
-        0,
-        0
+        0, 0
+    }, {
+        taskTwo,
+        RUNNABLE,
+        0, 0
+    }, {
+        taskThree,
+        RUNNABLE,
+        0, 0
     }
 };
 
@@ -83,6 +92,15 @@ void yield(uint8_t pid, uint32_t numTicks) {
 }
 
 void taskOne(uint8_t pid) {
-    LED = (LED ^ 0x03);
+    LED = (LED ^ LED1_MASK);
+    yield(pid, 25);
+}
+
+void taskTwo(uint8_t pid) {
+    LED = (LED ^ LED0_MASK);
     yield(pid, 100);
+}
+
+void taskThree(uint8_t pid) {
+    yield(pid, 50);
 }
