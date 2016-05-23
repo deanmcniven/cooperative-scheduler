@@ -35,6 +35,8 @@ volatile task_t Tasks[NUM_TASKS] = {
 };
 
 volatile uint32_t ticks = 0;
+uint8_t count_h = 0;
+uint8_t count_l = 0;
 
 int main()
 {
@@ -102,5 +104,16 @@ void taskTwo(uint8_t pid) {
 }
 
 void taskThree(uint8_t pid) {
+    BCD = (count_h << BCD_OFFSET) | (1 << BCD_L_MSD);
+    BCD = (count_l << BCD_OFFSET) | (1 << BCD_L_LSD);
+    BCD = BCD_BLANK;
+
+    count_l++;
+    if (count_l >= 10) {
+        count_l = 0;
+        count_h++;
+    }
+    if (count_h >= 10) count_h = 0;
+
     yield(pid, 50);
 }
