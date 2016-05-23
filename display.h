@@ -18,9 +18,11 @@
 #define BCD_L_MSD   3
 #define BCD_L_LSD   2
 
-#define LED     PORTB
-#define LED1    1
-#define LED0    0
+#define LED         PORTB
+#define LED1        1
+#define LED0        0
+#define LED1_MASK   0x02
+#define LED0_MASK   0x01
 
 void setupDisplay(void);
 
