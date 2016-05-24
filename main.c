@@ -4,6 +4,7 @@
  * Created: 5/2/2016 12:02:40 AM
  * Author : Dean McNiven
  */
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "stdio.h"
@@ -100,7 +101,12 @@ void taskOne(uint8_t pid) {
 
 void taskTwo(uint8_t pid) {
     LED = (LED ^ LED0_MASK);
+#ifdef GREEDY_TASK
+    uint32_t wait_until = ticks + 98 + pid;
+    while (ticks != wait_until) { asm("nop"); };
+#else
     yield(pid, 100);
+#endif
 }
 
 void taskThree(uint8_t pid) {

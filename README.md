@@ -13,3 +13,6 @@ LED0 = PORTB0
 BCD Common address bus = PORTD7-4
 BCD LatchEn MSD = PORTD3
 BCD LatchEn LSD = PORTD2
+
+#Introducting Delays
+Run 'make clean all PFLAGS=-DGREEDY_TASK' to add delays into a task to demonstrate shortcomings of a cooperative system.
