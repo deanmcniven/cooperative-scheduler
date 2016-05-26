@@ -12,24 +12,24 @@
 #include "coop_sched.h"
 #include "display.h"
 
-void setupTimer(void);
-void yield(uint8_t pid, uint32_t numTicks);
-void taskOne(uint8_t);
-void taskTwo(uint8_t);
-void taskThree(uint8_t);
+void setup_timer(void);
+void yield(uint8_t pid, uint32_t num_ticks);
+void task_one(uint8_t);
+void task_two(uint8_t);
+void task_three(uint8_t);
 
 #define NUM_TASKS 3
-volatile task_t Tasks[NUM_TASKS] = {
+volatile task_t tasks[NUM_TASKS] = {
     {
-        taskOne,
+        task_one,
         RUNNABLE,
         0, 0
     }, {
-        taskTwo,
+        task_two,
         RUNNABLE,
         0, 0
     }, {
-        taskThree,
+        task_three,
         RUNNABLE,
         0, 0
     }
@@ -42,35 +42,35 @@ uint8_t count_l = 0;
 int main()
 {
     cli();
-    setupTimer();
-    setupDisplay();
+    setup_timer();
+    setup_display();
     sei();
 
-    int currentTask = 0;
+    int current_task = 0;
 
     while (1)
     {
-        switch (Tasks[currentTask].state) {
+        switch (tasks[current_task].state) {
         case RUNNABLE:
-            (*Tasks[currentTask].entry)(currentTask);
+            (*tasks[current_task].entry)(current_task);
             break;
         case WAIT:
-            if ((Tasks[currentTask].tick_roll == 0) && (ticks >= Tasks[currentTask].wait_ticks)) {
-                Tasks[currentTask].state = RUNNABLE;
-            } else if ((Tasks[currentTask].tick_roll > 0) && ticks < Tasks[currentTask].wait_ticks) {
-                Tasks[currentTask].tick_roll = 0;
+            if ((tasks[current_task].tick_roll == 0) && (ticks >= tasks[current_task].wait_ticks)) {
+                tasks[current_task].state = RUNNABLE;
+            } else if ((tasks[current_task].tick_roll > 0) && ticks < tasks[current_task].wait_ticks) {
+                tasks[current_task].tick_roll = 0;
             }
             break;
         case HALT:
             break;
         }
 
-        currentTask++;
-        if (currentTask >= NUM_TASKS) currentTask = 0;
+        current_task++;
+        if (current_task >= NUM_TASKS) current_task = 0;
     }
 }
 
-void setupTimer()
+void setup_timer()
 {
     //Setup Ticks generation
     ASSR = 0x00;    //Timer2: Internal Clock
@@ -86,20 +86,20 @@ ISR(TIMER2_COMPA_vect) {
     SREG = sReg;
 }
 
-void yield(uint8_t pid, uint32_t numTicks) {
+void yield(uint8_t pid, uint32_t num_ticks) {
     cli();
-    Tasks[pid].state = WAIT;
-    Tasks[pid].wait_ticks = ticks + numTicks;
-    Tasks[pid].tick_roll = (Tasks[pid].wait_ticks < ticks) ? 1 : 0;
+    tasks[pid].state = WAIT;
+    tasks[pid].wait_ticks = ticks + num_ticks;
+    tasks[pid].tick_roll = (tasks[pid].wait_ticks < ticks) ? 1 : 0;
     sei();
 }
 
-void taskOne(uint8_t pid) {
+void task_one(uint8_t pid) {
     LED = (LED ^ LED1_MASK);
     yield(pid, 25);
 }
 
-void taskTwo(uint8_t pid) {
+void task_two(uint8_t pid) {
     LED = (LED ^ LED0_MASK);
 #ifdef GREEDY_TASK
     uint32_t wait_until = ticks + 98 + pid;
@@ -109,7 +109,7 @@ void taskTwo(uint8_t pid) {
 #endif
 }
 
-void taskThree(uint8_t pid) {
+void task_three(uint8_t pid) {
     BCD = (count_h << BCD_OFFSET) | (1 << BCD_L_MSD);
     BCD = (count_l << BCD_OFFSET) | (1 << BCD_L_LSD);
     BCD = BCD_BLANK;
