@@ -9,6 +9,11 @@
 #include <avr/interrupt.h>
 #include "stdio.h"
 
+#ifdef GREEDY_TASK
+    #define F_CPU 16000000UL
+    #include <util/delay.h>
+#endif
+
 #include "coop_sched.h"
 #include "display.h"
 
@@ -102,8 +107,8 @@ void task_one(uint8_t pid) {
 void task_two(uint8_t pid) {
     LED = (LED ^ LED0_MASK);
 #ifdef GREEDY_TASK
-    uint32_t wait_until = ticks + 98 + pid;
-    while (ticks != wait_until) { asm("nop"); };
+    pid++; //does nothing - just stops compiler errors dure to -Wall
+    _delay_ms(1000);
 #else
     yield(pid, 100);
 #endif
