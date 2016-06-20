@@ -62,7 +62,8 @@ int main()
         case WAIT:
             if ((tasks[current_task].tick_roll == 0) && (ticks >= tasks[current_task].wait_ticks)) {
                 tasks[current_task].state = RUNNABLE;
-            } else if ((tasks[current_task].tick_roll > 0) && ticks < tasks[current_task].wait_ticks) {
+                (*tasks[current_task].entry)(current_task);
+            } else if ((tasks[current_task].tick_roll > 0) && (ticks < tasks[current_task].wait_ticks)) {
                 tasks[current_task].tick_roll = 0;
             }
             break;
